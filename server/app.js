@@ -15,6 +15,8 @@ const Auth0Strategy = require("passport-auth0");
 
 require("dotenv").config();
 
+const authRouter = require("./auth");
+
 app.use(cors());
 app.use(express.static('docs'));
 // parse requests of content-type - application/x-www-form-urlencoded
@@ -102,3 +104,6 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
     done(null, user);
 });
+
+// Router mounting
+app.use("/", authRouter);

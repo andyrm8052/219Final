@@ -72,3 +72,4 @@ router.get("/logout", (req, res) => {
 /**
  * Module Exports
  */
+module.exports = router;
