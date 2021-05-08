@@ -1,8 +1,13 @@
 {
   "parser": "babel-eslint",
   "extends": ["airbnb"],
+  "env": {
+    "node": true
+  },
   "rules": {
     "max-len": [1, 300, 2, { "ignoreComments": true }],
     "no-console": "off",
-    "no-shadow": ["error", { "builtinGlobals": false, "hoist": "functions", "allow": [] }]
-  }}
+    "no-shadow": ["error", { "builtinGlobals": false, "hoist": "functions", "allow": [] }],
+    "linebreak-style": ["error", "windows"]
+  }
+}
