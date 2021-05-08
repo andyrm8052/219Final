@@ -32,7 +32,7 @@ app.set('port', process.env.PORT || 8000);
 app.set('ip', process.env.NODEJS_IP || '127.0.0.1');
 app.listen(app.get('port'), () => {
   console.log('%s: Node server started on %s ...', Date(Date.now()), app.get('port'));
-  open('http://localhost:8000');
+  //open('http://localhost:8000');
 });
 
 
@@ -110,6 +110,32 @@ app.use((req, res, next) => {
     res.locals.isAuthenticated = req.isAuthenticated();
     next();
 });
+
+/**
+ * Routes Definitions
+ */
+
+const secured = (req, res, next) => {
+    if (req.user) {
+        return next();
+    }
+    req.session.returnTo = req.originalUrl;
+    res.redirect("/login");
+};
+
+// Defined routes
+app.get('/', (req, res) => {
+    res.render("index", { title: "Home" });
+});
+app.get("/user", secured, (req, res, next) => {
+    const { _raw, _json, ...userProfile } = req.user;
+    res.render("user", {
+        title: "Profile",
+        userProfile: userProfile
+    });
+});
+
+
 
 // Router mounting
 app.use("/", authRouter);
