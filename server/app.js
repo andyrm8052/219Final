@@ -105,5 +105,11 @@ passport.deserializeUser((user, done) => {
     done(null, user);
 });
 
+// Creating custom middleware with Express
+app.use((req, res, next) => {
+    res.locals.isAuthenticated = req.isAuthenticated();
+    next();
+});
+
 // Router mounting
 app.use("/", authRouter);
