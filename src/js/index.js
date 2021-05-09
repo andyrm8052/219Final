@@ -25,7 +25,7 @@ getJSON('http://localhost:8000/api/v1/cities',
              */
     }
   });
-ConsoleLogIt('this workedss  in the bundle');
+ConsoleLogIt('this worked  in the bundle');
 
 function generateTableHead(table, data) {
   const thead = table.createTHead();

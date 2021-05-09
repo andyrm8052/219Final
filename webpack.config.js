@@ -1,4 +1,4 @@
-const CopyPlugin = require('copy-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 const path = require('path');
 
 module.exports = {
@@ -22,23 +22,22 @@ module.exports = {
       {
         test: /\.(js)$/,
         exclude: /node_modules/,
-        use: ['babel-loader', 'eslint-loader'],
+        use: ['babel-loader', 'eslint-loader']
       },
     ],
   },
   resolve: {
-    extensions: ['*', '.js'],
+    extensions: ['*', '.js']
   },
   plugins: [
     new CopyPlugin({
       patterns: [
-        {
-          from: 'src',
+        { from: "src",
           globOptions: {
             ignore: [
               '**/js/*',
-            ],
-          },
+            ]
+          }
         }],
       options: {
         concurrency: 100,
@@ -50,6 +49,8 @@ module.exports = {
     open: true,
     compress: true,
     port: 8080,
-
+    proxy: {
+      '/api': 'http://localhost:8000'
+    }
   },
 };

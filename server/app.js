@@ -4,9 +4,10 @@
 
 const express = require('express');
 const path = require("path");
-const open = require('open');
+
+//const open = require('open');
 const bodyParser = require('body-parser');
-const cors = require('cors');
+//const cors = require('cors');
 const app = express();
 
 const expressSession = require("express-session");
@@ -14,48 +15,37 @@ const passport = require("passport");
 const Auth0Strategy = require("passport-auth0");
 
 require("dotenv").config();
-
 const authRouter = require("./auth");
 
-app.use(cors());
-app.use(express.static('docs'));
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
-// define a root route
-// Require employee routes
+
+//app.use(cors())
+
 const citiesRoutes = require('./routes/cities.routes');
 // using as middleware
-app.use('/api/v1/cities', citiesRoutes);
-app.set('port', process.env.PORT || 8000);
-app.set('ip', process.env.NODEJS_IP || '127.0.0.1');
-app.listen(app.get('port'), () => {
-  console.log('%s: Node server started on %s ...', Date(Date.now()), app.get('port'));
-  //open('http://localhost:8000');
-});
-
 
 /**
  * App Variables
  */
-const port = process.env.PORT || "8000";
-
+const port = process.env.PORT || "3000";
 
 
 /**
  * Session Configuration
  */
 const session = {
-  secret: process.env.SESSION_SECRET,
-  cookie: {},
-  resave: false,
-  saveUninitialized: false
+    secret: process.env.SESSION_SECRET,
+    cookie: {},
+    resave: false,
+    saveUninitialized: false
 };
 
 if (app.get("env") === "production") {
-  // Serve secure cookies, requires HTTPS
-  session.cookie.secure = true;
+    // Serve secure cookies, requires HTTPS
+    session.cookie.secure = true;
 }
 
 
@@ -64,21 +54,21 @@ if (app.get("env") === "production") {
  */
 const strategy = new Auth0Strategy(
     {
-      domain: process.env.AUTH0_DOMAIN,
-      clientID: process.env.AUTH0_CLIENT_ID,
-      clientSecret: process.env.AUTH0_CLIENT_SECRET,
-      callbackURL: process.env.AUTH0_CALLBACK_URL
+        domain: process.env.AUTH0_DOMAIN,
+        clientID: process.env.AUTH0_CLIENT_ID,
+        clientSecret: process.env.AUTH0_CLIENT_SECRET,
+        callbackURL: process.env.AUTH0_CALLBACK_URL
     },
     function(accessToken, refreshToken, extraParams, profile, done) {
-      /**
-       * Access tokens are used to authorize users to an API
-       * (resource server)
-       * accessToken is the token to call the Auth0 API
-       * or a secured third-party API
-       * extraParams.id_token has the JSON Web Token
-       * profile has all the information from the user
-       */
-      return done(null, profile);
+        /**
+         * Access tokens are used to authorize users to an API
+         * (resource server)
+         * accessToken is the token to call the Auth0 API
+         * or a secured third-party API
+         * extraParams.id_token has the JSON Web Token
+         * profile has all the information from the user
+         */
+        return done(null, profile);
     }
 );
 
@@ -114,6 +104,8 @@ app.use((req, res, next) => {
 /**
  * Routes Definitions
  */
+// Router mounting
+app.use("/", authRouter);
 
 const secured = (req, res, next) => {
     if (req.user) {
@@ -124,10 +116,11 @@ const secured = (req, res, next) => {
 };
 
 // Defined routes
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
     res.render("index", { title: "Home" });
 });
-app.get("/user", secured, (req, res, next) => {
+
+app.get("/user", secured, (req, res) => {
     const { _raw, _json, ...userProfile } = req.user;
     res.render("user", {
         title: "Profile",
@@ -135,7 +128,26 @@ app.get("/user", secured, (req, res, next) => {
     });
 });
 
+app.get("/cities", (req, res) => {
+    res.render("cities");
+});
 
+// This route is not needed authentication
+app.get('/api/public', (req, res) => {
+    res.json({
+        message: 'Hello from a public endpoint! Authentication is not needed to see this.',
+    });
+});
 
-// Router mounting
-app.use("/", authRouter);
+app.set('port', process.env.PORT || 8000);
+app.use('/api/v1/cities', citiesRoutes);
+app.set('ip', process.env.NODEJS_IP || '127.0.0.1');
+
+app.listen(port, () => {
+    console.log(`Listening to requests on http://localhost:${port}`);
+});
+
+app.use(express.static('docs'));
+//app.listen(app.get('port'), () => {
+    //console.log('%s: Node server started', app.get('port'));
+//});
