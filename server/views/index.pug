@@ -1,17 +1,27 @@
 extends layout
 
 block layout-content
-    div.View.WelcomeView
-        h1.Banner Passport Auth Home
-        div.Message
-            div.Title
-                h3 Andy Marmolejos
-                h1 IS 219
-            span.Details Access the WHATABYTE Team Portal
         div.NavButtons
             if isAuthenticated
+                div.View.WelcomeView
+                    h1.Banner Passport Auth Home
+                    div.Message
+                        div.Title
+                            h3 Andy Marmolejos
+                            h1 IS 219 Final
+                        span.Details Access the WHATABYTE Team Portal
                 a(href="/user")
-                    div.NavButton Just dive in!
+                    div.NavButton User Data
+                a(href="http://localhost:8000")
+                    div.NavButton View Cities Data
+                a(href="/logout")
+                    div.NavButton Log Out
             else
+                div.View.WelcomeView
+                    h1.Banner Login Home Page
+                    div.Message
+                        div.Title
+                            h1 Please Log In!
+                        span.Details Access the User and Cities Data
                 a(href="/login")
                     div.NavButton Log in
