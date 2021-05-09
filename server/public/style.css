@@ -1,0 +1,26 @@
+.buttons{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.NavButton {
+    margin-top: 10px;
+    display: inline-block;
+    height: 40px;
+    width: 120px;
+    text-decoration: none;
+    border-radius: 15px;
+    padding-top: 12px;
+    background: black;
+    color: white;
+    font-family: Arial;
+    font-size: 18px;
+}
+
+
+html{
+    margin-top: 180px;
+    background-color: gainsboro;
+    text-align: center;
+}
