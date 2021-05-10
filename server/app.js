@@ -148,6 +148,6 @@ app.listen(port, () => {
 });
 
 app.use(express.static('docs'));
-//app.listen(app.get('port'), () => {
+app.listen(app.get('port'), () => {
     //console.log('%s: Node server started', app.get('port'));
-//});
+});
