@@ -6,8 +6,9 @@ block layout-content
         div.Message
             div.Title
                 h3 IS 219
-                h1 Teammate Profile
             pre.Details=JSON.stringify(userProfile, null, 2)
         div.NavButtons
+            a(href="http://localhost:3000")
+                div.NavButton Home
             a(href="/logout")
                 div.NavButton Log out
