@@ -23,6 +23,30 @@ h6 {
     font-size: 100%;
 }
 
+.buttons {
+    padding-top: 10px;
+    float: right;
+    display: inline-block;
+    text-align: center;
+
+}
+.buttons a{
+    text-decoration: none;
+}
+
+.buttons a p{
+    color: white;
+    font-family: Arial, serif;
+    font-size: 18px;
+    padding-top: 5px;
+}
+
+.button{
+    height: 40px;
+    width: 110px;
+    background: black;
+    border-radius: 15px;
+}
 .wrapper {
     width: 960px;
     margin-left: auto;
