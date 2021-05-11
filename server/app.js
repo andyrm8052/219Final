@@ -5,9 +5,6 @@
 const express = require('express');
 const path = require("path");
 
-//const open = require('open');
-const bodyParser = require('body-parser');
-//const cors = require('cors');
 const app = express();
 
 const expressSession = require("express-session");
@@ -17,15 +14,15 @@ const Auth0Strategy = require("passport-auth0");
 require("dotenv").config();
 const authRouter = require("./auth");
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
-// parse requests of content-type - application/json
-app.use(bodyParser.json());
+const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken')
 
-//app.use(cors())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+const accessTokenSecret = 'youraccesstokensecret';
+
 
 const citiesRoutes = require('./routes/cities.routes');
-// using as middleware
 
 /**
  * App Variables
@@ -101,12 +98,35 @@ app.use((req, res, next) => {
     next();
 });
 
+const authenticateJWT = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+
+        jwt.verify(token, accessTokenSecret, (err, user) => {
+            if (err) {
+                return res.sendStatus(403);
+            }
+
+            req.user = user;
+            next();
+        });
+    } else {
+        res.sendStatus(401);
+    }
+};
+
+
 /**
  * Routes Definitions
  */
 // Router mounting
 app.use("/", authRouter);
 
+
+
+// Defined routes
 const secured = (req, res, next) => {
     if (req.user) {
         return next();
@@ -115,7 +135,6 @@ const secured = (req, res, next) => {
     res.redirect("/login");
 };
 
-// Defined routes
 app.get("/", (req, res) => {
     res.render("index", { title: "Home" });
 });
@@ -128,9 +147,6 @@ app.get("/user", secured, (req, res) => {
     });
 });
 
-app.get("/cities", (req, res) => {
-    res.render("cities");
-});
 
 // This route is not needed authentication
 app.get('/api/public', (req, res) => {
