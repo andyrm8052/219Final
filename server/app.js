@@ -25,6 +25,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const accessTokenSecret = 'youraccesstokensecret';
 
+const api = require('./routes/api');
+const table = require('./routes/table');
+const form = require('./routes/form')
+
+
 /**
  * App Variables
  */
@@ -140,7 +145,10 @@ passport.deserializeUser((user, done) => {
  */
 // Router mounting
 app.use("/", authRouter);
-
+app.use("/api", api);
+app.use("/auth", authRouter);
+app.use("/table", table);
+app.use("/form", form);
 
 // Defined routes
 const secured = (req, res, next) => {
