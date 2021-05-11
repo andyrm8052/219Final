@@ -1,0 +1,48 @@
+extends layout
+
+block layout-content
+    div.View.UserView
+        div.Message
+            div.Title
+                h2 Cites Data
+
+
+            div.cityTable
+                table.table
+                    thead
+                        tr
+                            th ID
+                            th Name
+                            th Latitude
+                            th Longitude
+                            th Country
+                            th Abbreviation
+                            th Capital
+                            th Population
+
+                            div.NavButtons
+                                div.addButton
+                                    a(href="/form")
+                                        div.NavButton Add New
+                        tbody
+                        each item in cities
+                            tr
+                                td= item.id
+                                td= item.fldName
+                                td= item.fldLat
+                                td= item.fldLong
+                                td= item.fldCountry
+                                td= item.fldAbbreviation
+                                td= item.fldCapitalStatus
+                                td= item.fldPopulation
+
+                                    a.btn.btn-primary(href='/form?id=item.id' role='button')   Edit
+                                td
+                                    a.btn.btn-danger(href='/api/delete/item.id' role='button')   Delete
+
+                div.NavButtons
+                    div.citiesButtons
+                        a(href="http://localhost:3000")
+                            div.NavButton Home
+                        a(href="http://localhost:3000/logout")
+                            div.NavButton Log Out
