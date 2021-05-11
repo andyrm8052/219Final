@@ -25,4 +25,20 @@ html{
     text-align: center;
 }
 
+.cityTable{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.citiesButtons{
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+}
+
+.addButton{
+    margin-right: 20px;
+}
 
