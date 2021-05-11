@@ -1,0 +1,35 @@
+extends layout
+
+block layout-content
+    div.addPage
+        div.Message
+            div.Title
+                h2 Add New City
+        form(action='/api/addNew' method='POST')
+            .form-group.row
+                label(for='id') ID:
+                input#id.form-control(type='text' name='id' placeholder='')
+            .form-group.row
+                label(for='fldName') City Name:
+                input#fldName.form-control(type='text' name='fldName' placeholder='')
+            .form-group.row
+                label(for='fldLat') Latitude:
+                input#fldLat.form-control(type='text' name='fldLat' placeholder='')
+            .form-group.row
+                label(for='fldLong') Longitude:
+                input#fldLong.form-control(type='text' name='fldLong' placeholder='')
+            .form-group.row
+                label(for='fldCountry') Country:
+                input#fldCountry.form-control(type='text' name='fldCountry' placeholder='')
+            .form-group.row
+                label(for='fldAbbreviation') Abbreviation:
+                input#fldAbbreviation.form-control(type='text' name='fldAbbreviation' placeholder='')
+            .form-group.row
+                label(for='fldCapitalStatus') Capital:
+                input#fldCapitalStatus.form-control(type='text' name='fldCapitalStatus' placeholder='')
+            .form-group.row
+                label(for='fldPopulation') Population:
+                input#fldPopulation.form-control(type='text' name='fldPopulation' placeholder='')
+                .form-group.row
+                div
+                    button.btn.btn-primary(type='submit') Add
