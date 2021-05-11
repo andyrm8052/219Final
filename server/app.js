@@ -165,6 +165,29 @@ app.get("/user", secured, (req, res) => {
 
 
 
+// This route is not needed authentication
+app.get('/citiesTable', authenticateJWT, (req, res, next) => {
+    request("http://localhost:8000/api/v1/cities", (err, response, body) => {
+        if (err || response.statusCode !== 200) {
+            return res.sendStatus(500);
+        }
+        res.render('citiesTable', { title : 'Home', cities : JSON.parse(body).data });
+        next();
+    });
+});
+
+app.get('/form', authenticateJWT, (req, res) => {
+    res.render("form", { title: "Search" });
+});
+
+app.get('/add', authenticateJWT, (req, res) => {
+    res.render("form", { title: "Search" });
+});
+
+app.get('/edit', authenticateJWT, (req, res) => {
+    res.render("form", { title: "Search" });
+});
+
 
 
 app.set('port', process.env.PORT || 8000);
