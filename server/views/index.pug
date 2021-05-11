@@ -4,16 +4,17 @@ block layout-content
         div.NavButtons
             if isAuthenticated
                 div.View.WelcomeView
-                    h1.Banner Passport Auth Home
+                    h1.Banner Passport Auth0 Home
                     div.Message
                         div.Title
-                            h3 Andy Marmolejos
                             h1 IS 219 Final
                         span.Details Access User and Cities Data
                 div.buttons
                     a(href="/user")
                         div.NavButton User Data
-                    a(href="http://localhost:3000/index.html")
+                    //a(href="/table")
+                    //a(href="http://localhost:3000/index.html")
+                    a(href="/citiesTable")
                         div.NavButton Cities Data
                     a(href="/logout")
                         div.NavButton Log Out

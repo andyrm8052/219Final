@@ -14,15 +14,16 @@ const Auth0Strategy = require("passport-auth0");
 require("dotenv").config();
 const authRouter = require("./auth");
 
+const citiesRoutes = require('./routes/cities.routes');
+const request = require("request");
+
+
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken')
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const accessTokenSecret = 'youraccesstokensecret';
-
-
-const citiesRoutes = require('./routes/cities.routes');
 
 /**
  * App Variables
@@ -70,6 +71,46 @@ const strategy = new Auth0Strategy(
 );
 
 
+// Creating custom middleware with Express
+app.use((req, res, next) => {
+    res.locals.isAuthenticated = req.isAuthenticated();
+    if (req.user) {
+        if (typeof (res._headers.authorization) === "undefined") {
+            const accessToken = jwt.sign(req.user._json, accessTokenSecret, {expiresIn: '10m'});
+            res.setHeader('Authorized', 'Bearer ' + accessToken);
+        }
+    }else if (!req.user){
+        try {
+            res.setHeader('Authorizeed', ' ');
+        }catch{}
+    }
+    next();
+});
+
+
+const authenticateJWT = (req, res, next) => {
+    if (req.user) {
+        const authHeader = res._headers.authorization;
+        console.log(authHeader);
+        if (authHeader) {
+            const token = authHeader.split(' ')[1];
+            jwt.verify(token, accessTokenSecret, (err, user) => {
+                if (err) {
+                    return res.sendStatus(403);
+                }
+                req.user = user;
+                next();
+            });
+        } else {
+            res.sendStatus(401);
+        }
+    } else {
+        console.log("Incorrect Token");
+        req.session.returnTo = req.originalUrl;
+        res.redirect("/login");
+    }
+};
+
 
 /**
  *  App Configuration
@@ -92,30 +133,6 @@ passport.deserializeUser((user, done) => {
     done(null, user);
 });
 
-// Creating custom middleware with Express
-app.use((req, res, next) => {
-    res.locals.isAuthenticated = req.isAuthenticated();
-    next();
-});
-
-const authenticateJWT = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-
-    if (authHeader) {
-        const token = authHeader.split(' ')[1];
-
-        jwt.verify(token, accessTokenSecret, (err, user) => {
-            if (err) {
-                return res.sendStatus(403);
-            }
-
-            req.user = user;
-            next();
-        });
-    } else {
-        res.sendStatus(401);
-    }
-};
 
 
 /**
@@ -123,7 +140,6 @@ const authenticateJWT = (req, res, next) => {
  */
 // Router mounting
 app.use("/", authRouter);
-
 
 
 // Defined routes
@@ -148,12 +164,8 @@ app.get("/user", secured, (req, res) => {
 });
 
 
-// This route is not needed authentication
-app.get('/api/public', (req, res) => {
-    res.json({
-        message: 'Hello from a public endpoint! Authentication is not needed to see this.',
-    });
-});
+
+
 
 app.set('port', process.env.PORT || 8000);
 app.use('/api/v1/cities', citiesRoutes);
