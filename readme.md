@@ -1,39 +1,27 @@
-This is based on this tutorial:
+###IS219 Final
+Login
 
-Babel: https://www.robinwieruch.de/webpack-eslint/
-What is ESLint?: https://medium.com/the-node-js-collection/why-and-how-to-use-eslint-in-your-project-742d0bc61ed7
+![Login](./img/login.png)
+![Login2](./img/login2.png)
 
-Commands:
-webpack build <- runs eslint on front end and babel npm run eslint <-runs eslint on the backend in the server directory
-you will get an error if there are any eslint violations but that won't stop your program from running.
+Homepage
 
-Prerequisites:
-Install Node:
-https://nodejs.org/en/download/
-Complete the Babel Branch Tutorial
+![Home](./img/home.png)
 
-Install Webpack Globally by running this command on your terminal / command prompt
+Cities Table
 
-npm install --global webpack
+![Cities](./img/cities.png)
 
-Webpack Documentation: https://webpack.js.org/
+Add New City
 
-To Use:
+![Add](./img/add.png)
+![Add2](./img/add2.png)
 
-1. Clone the Repo
-2. Run npm install
-3. Run webpack serve to live reload your project, so you can see changes without refreshing the browser
-4. Once it's running you can go to the dev server and see your changes: http://localhost:9000/
-5. **run "webpack build" to bundle your code and put it in the docs folder so github pages can serve it**
+Edit City
 
-Press Control C to stop the server or the builder
+![Edit](./img/edit.png)
+![Edit2](./img/edit2.png)
 
-Turn on github pages and put a link to your site in the readme when you turn in the github repo link.
+Delete City
 
-Working site here:
-
-http://www.webizly.com/BasicWebPack/
-
-Based on this tutorial:
-
-https://medium.com/@rahulguptalive/create-crud-apis-in-nodejs-express-and-mysql-abda4dfc2d6
+![Delete](./img/delete.png)

@@ -80,13 +80,13 @@ const strategy = new Auth0Strategy(
 app.use((req, res, next) => {
     res.locals.isAuthenticated = req.isAuthenticated();
     if (req.user) {
-        if (typeof (res._headers.authorization) === "undefined") {
-            const accessToken = jwt.sign(req.user._json, accessTokenSecret, {expiresIn: '10m'});
-            res.setHeader('Authorized', 'Bearer ' + accessToken);
+        if (typeof (res.getHeaders().authorization) === "undefined") {
+            const accessToken = jwt.sign(req.user._json, accessTokenSecret, {expiresIn: '20m'});
+            res.setHeader('Authorization', 'Bearer ' + accessToken);
         }
     }else if (!req.user){
         try {
-            res.setHeader('Authorizeed', ' ');
+            res.setHeader('Authorization', ' ');
         }catch{}
     }
     next();
@@ -94,8 +94,9 @@ app.use((req, res, next) => {
 
 
 const authenticateJWT = (req, res, next) => {
+    console.log("authenticating");
     if (req.user) {
-        const authHeader = res._headers.authorization;
+        const authHeader = res.getHeaders().authorization;
         console.log(authHeader);
         if (authHeader) {
             const token = authHeader.split(' ')[1];
@@ -110,11 +111,12 @@ const authenticateJWT = (req, res, next) => {
             res.sendStatus(401);
         }
     } else {
-        console.log("Incorrect Token");
+        console.log("Failed to validate token!");
         req.session.returnTo = req.originalUrl;
         res.redirect("/login");
     }
 };
+
 
 
 /**
@@ -189,11 +191,11 @@ app.get('/form', authenticateJWT, (req, res) => {
 });
 
 app.get('/add', authenticateJWT, (req, res) => {
-    res.render("form", { title: "Search" });
+    res.render("form", { title: "Add" });
 });
 
 app.get('/edit', authenticateJWT, (req, res) => {
-    res.render("form", { title: "Search" });
+    res.render("form", { title: "Edit" });
 });
 
 
